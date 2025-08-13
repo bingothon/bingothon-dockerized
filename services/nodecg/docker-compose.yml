@@ -1,0 +1,26 @@
+services:
+  nodecg:
+    build:
+      context: .
+      args:
+        BINGOTHON_LAYOUTS_BRANCH: ${BINGOTHON_LAYOUTS_BRANCH:-master}
+    ports:
+      - "9090:9090"
+    volumes:
+      - nodecg-logs:/opt/nodecg/logs
+      - nodecg-db:/opt/nodecg/db
+      - nodecg-assets:/opt/nodecg/assets
+    restart: unless-stopped
+    environment:
+      - NODECG_ROOT=/opt/nodecg
+    networks:
+      - bingothon-network
+
+volumes:
+  nodecg-logs:
+  nodecg-db:
+  nodecg-assets:
+
+networks:
+  bingothon-network:
+    external: true

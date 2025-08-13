@@ -1,0 +1,21 @@
+services:
+  mpd:
+    build: .
+    ports:
+      - "6600:6600"
+    volumes:
+      - ./music:/var/lib/mpd/music
+      - mpd-playlists:/var/lib/mpd/playlists
+      - mpd-data:/var/lib/mpd
+    restart: unless-stopped
+    networks:
+      - bingothon-network
+
+volumes:
+  mpd-music:
+  mpd-playlists:
+  mpd-data:
+
+networks:
+  bingothon-network:
+    external: true 

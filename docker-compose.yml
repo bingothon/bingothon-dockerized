@@ -1,0 +1,18 @@
+services:
+  nodecg:
+    extends:
+      file: ./services/nodecg/docker-compose.yml
+      service: nodecg
+    # You can override any settings from the service-specific compose file here
+    # For example:
+    # environment:
+    #   - ADDITIONAL_ENV_VAR=value
+
+  mpd:
+    extends:
+      file: ./services/mpd/docker-compose.yml
+      service: mpd
+
+networks:
+  default:
+    name: bingothon-network

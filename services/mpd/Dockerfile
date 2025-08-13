@@ -10,9 +10,6 @@ RUN mkdir -p /var/lib/mpd/music /var/lib/mpd/playlists /var/lib/mpd && \
 # Copy MPD configuration
 COPY mpd.conf /etc/mpd.conf
 
-# Expose MPD port
-EXPOSE 6600
-
 # Switch to mpd user
 USER mpd
 

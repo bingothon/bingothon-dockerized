@@ -152,6 +152,9 @@ db/
 logs/
 assets/
 
+# MPD Music files
+services/mpd/music/
+
 # Docker
 .dockerignore
 

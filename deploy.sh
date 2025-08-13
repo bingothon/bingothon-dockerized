@@ -83,6 +83,18 @@ check_config() {
     fi
 }
 
+# Function to check and setup bundles if needed
+check_and_setup_bundles() {
+    if [ ! -d "./services/nodecg/bundles" ] || [ ! -d "./services/nodecg/bundles/bingothon-layouts" ] || [ ! -d "./services/nodecg/bundles/nodecg-speedcontrol" ]; then
+        echo -e "${YELLOW}📦 Setting up NodeCG bundles...${NC}"
+        cd services/nodecg
+        BINGOTHON_LAYOUTS_BRANCH=${BINGOTHON_LAYOUTS_BRANCH} ./setup-bundles.sh
+        cd ../..
+    else
+        echo -e "${GREEN}✅ NodeCG bundles already exist${NC}"
+    fi
+}
+
 # Function to create network if it doesn't exist
 create_network() {
     if ! docker network ls | grep -q "bingothon-network"; then
@@ -157,6 +169,7 @@ build_services() {
     echo -e "${YELLOW}📦 Using bingothon-layouts branch: ${BINGOTHON_LAYOUTS_BRANCH}${NC}"
     
     check_config
+    check_and_setup_bundles
     create_network
     
     # Build NodeCG service
@@ -187,6 +200,7 @@ rebuild_services() {
     echo -e "${YELLOW}📦 Using bingothon-layouts branch: ${BINGOTHON_LAYOUTS_BRANCH}${NC}"
     
     check_config
+    check_and_setup_bundles
     create_network
     
     # Rebuild NodeCG service

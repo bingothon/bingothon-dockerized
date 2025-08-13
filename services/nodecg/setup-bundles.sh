@@ -10,6 +10,8 @@ echo "Setting up NodeCG bundles for development..."
 
 # Create bundles directory if it doesn't exist
 mkdir -p "$BUNDLES_DIR"
+# Ensure proper permissions
+chmod 755 "$BUNDLES_DIR"
 
 # Clone bingothon-layouts if it doesn't exist
 if [ ! -d "$BUNDLES_DIR/bingothon-layouts" ]; then
@@ -31,5 +33,5 @@ echo "Bundle setup complete!"
 echo ""
 echo "You can now:"
 echo "1. Edit bundles directly in the $BUNDLES_DIR directory"
-echo "2. Rebuild the container with: docker compose build nodecg"
-echo "3. Or rebuild from the project root with: ./start.sh rebuild-api" 
+echo "2. Rebuild the container with: ./deploy.sh rebuild"
+echo "3. Start services with: ./deploy.sh start" 

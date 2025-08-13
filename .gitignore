@@ -151,6 +151,7 @@ cfg/
 db/
 logs/
 assets/
+services/nodecg/bundles/
 
 # MPD Music files
 services/mpd/music/

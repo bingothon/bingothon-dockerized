@@ -7,6 +7,10 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
+# Set UID and GID for Docker user mapping (for proper volume permissions)
+export DOCKER_UID=${UID:-$(id -u)}
+export DOCKER_GID=${GID:-$(id -g)}
+
 # Parse command line arguments
 COMMAND="${1:-start}"
 BINGOTHON_LAYOUTS_BRANCH="master"
@@ -107,8 +111,10 @@ create_network() {
 start_services() {
     echo -e "${GREEN}🚀 Starting Bingothon NodeCG Services${NC}"
     echo -e "${YELLOW}📦 Using bingothon-layouts branch: ${BINGOTHON_LAYOUTS_BRANCH}${NC}"
+    echo -e "${BLUE}👤 Using UID: ${DOCKER_UID}, GID: ${DOCKER_GID}${NC}"
     
     check_config
+    check_and_setup_bundles
     create_network
     
     # Start NodeCG service

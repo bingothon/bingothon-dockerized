@@ -10,6 +10,7 @@ services:
       - nodecg-logs:/opt/nodecg/logs
       - nodecg-db:/opt/nodecg/db
       - nodecg-assets:/opt/nodecg/assets
+      - ./bundles:/opt/nodecg/bundles
     restart: unless-stopped
     environment:
       - NODECG_ROOT=/opt/nodecg

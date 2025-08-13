@@ -15,24 +15,28 @@ RUN npm install -g nodecg
 # Initialize NodeCG
 RUN nodecg setup
 
-# Clone required bundles
+# Clone required bundles (only if they don't exist)
 ARG BINGOTHON_LAYOUTS_BRANCH=master
-RUN git clone -b ${BINGOTHON_LAYOUTS_BRANCH} https://github.com/bingothon/bingothon-layouts bundles/bingothon-layouts
-RUN git clone https://github.com/speedcontrol/nodecg-speedcontrol bundles/nodecg-speedcontrol
+RUN if [ ! -d "bundles/bingothon-layouts" ]; then \
+        git clone -b ${BINGOTHON_LAYOUTS_BRANCH} https://github.com/bingothon/bingothon-layouts bundles/bingothon-layouts; \
+    fi
+RUN if [ ! -d "bundles/nodecg-speedcontrol" ]; then \
+        git clone https://github.com/speedcontrol/nodecg-speedcontrol bundles/nodecg-speedcontrol; \
+    fi
 
 # Change ownership of bundles before building (much faster)
 RUN chown -R nodecg:nodecg /opt/nodecg/bundles
 
-# Build the bingothon-layouts bundle as nodecg user
+# Build the bingothon-layouts bundle as nodecg user (only if it exists)
 USER nodecg
-WORKDIR /opt/nodecg/bundles/bingothon-layouts
-RUN npm install && npm run build
-WORKDIR /opt/nodecg
+RUN if [ -d "/opt/nodecg/bundles/bingothon-layouts" ]; then \
+        cd /opt/nodecg/bundles/bingothon-layouts && npm install && npm run build; \
+    fi
 
-# Build the nodecg-speedcontrol bundle as nodecg user
-WORKDIR /opt/nodecg/bundles/nodecg-speedcontrol
-RUN npm install && npm run build
-WORKDIR /opt/nodecg
+# Build the nodecg-speedcontrol bundle as nodecg user (only if it exists)
+RUN if [ -d "/opt/nodecg/bundles/nodecg-speedcontrol" ]; then \
+        cd /opt/nodecg/bundles/nodecg-speedcontrol && npm install && npm run build; \
+    fi
 
 # Switch back to root for copying config
 USER root
@@ -46,9 +50,6 @@ RUN mkdir -p /opt/nodecg/assets && \
 
 # Switch to nodecg user for final run
 USER nodecg
-
-# Expose port
-EXPOSE 9090
 
 # Start NodeCG
 CMD ["nodecg", "start"]

@@ -1,6 +1,6 @@
 FROM debian:bullseye-slim
 
-# Install MPD
+# Install MPD and additional audio packages
 RUN apt-get update && apt-get install -y mpd && rm -rf /var/lib/apt/lists/*
 
 # Create all required directories with correct ownership

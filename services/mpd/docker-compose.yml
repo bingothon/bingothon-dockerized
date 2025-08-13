@@ -3,10 +3,21 @@ services:
     build: .
     ports:
       - "6600:6600"
+      - "8000:8000"
     volumes:
       - ./music:/var/lib/mpd/music
       - mpd-playlists:/var/lib/mpd/playlists
       - mpd-data:/var/lib/mpd
+    restart: unless-stopped
+    networks:
+      - bingothon-network
+
+  mpd-web:
+    image: nginx:alpine
+    ports:
+      - "8080:80"
+    volumes:
+      - ./web:/usr/share/nginx/html
     restart: unless-stopped
     networks:
       - bingothon-network
